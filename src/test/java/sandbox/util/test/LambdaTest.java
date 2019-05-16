@@ -49,5 +49,10 @@ public class LambdaTest {
 	void testSuplier() {
 		assertTrue(lambda.getRandom(18, 35) != null);
 	}
+	
+	@Test
+	void testConcatena() {
+		assertTrue(lambda.concatenaNomes().length() > funcionarios.get(0).getNome().length());
+	}
 
 }

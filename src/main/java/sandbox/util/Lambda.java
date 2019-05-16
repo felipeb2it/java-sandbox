@@ -78,5 +78,15 @@ public class Lambda {
 		return randomValue.get();
 	}
 	
+	/**
+	 * Concatena os nome de todos os funcionários separados por virgula
+	 * @return String com os nomes
+	 */
+	public String concatenaNomes() {
+		String nomes = funcionarios.stream().map(Funcionario::getNome).collect(Collectors.joining(", "));
+		logger.info("Nomes concatenados: " + nomes);
+		return nomes;
+	}
+	
 
 }
