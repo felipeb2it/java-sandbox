@@ -54,5 +54,12 @@ public class LambdaTest {
 	void testConcatena() {
 		assertTrue(lambda.concatenaNomes().length() > funcionarios.get(0).getNome().length());
 	}
+	
+	@Test
+	void testRecordTime() {
+		// StringSuppliers supp = lambda::mockProcesso;
+		Integer result = lambda.recordTime(lambda::mockProcesso);
+		System.out.println(result);
+	}
 
 }

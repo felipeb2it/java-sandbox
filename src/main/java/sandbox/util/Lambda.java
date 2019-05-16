@@ -1,9 +1,12 @@
 package sandbox.util;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -76,6 +79,38 @@ public class Lambda {
 			return r.ints(min,(max+1)).findFirst().getAsInt();
 		};
 		return randomValue.get();
+	}
+	
+	/**
+	 * Mock para simular um processamento de 1 a 3 segundos.
+	 * @return valor Integer aleatório de 1 a 10.
+	 */
+	public Integer mockProcesso() {
+		Integer tempo = getRandom(1, 3);
+		try {
+			Thread.sleep(TimeUnit.SECONDS.toMillis(tempo));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		logger.info("Gerando valor aleatório para simular resposta");
+		return getRandom(1, 10);
+	}
+	
+	/**
+	 * Calcula o tempo gasto, em milisegundos para qualquer método passado para o Supplier.
+	 * @param code
+	 * @return o resultado do processamento
+	 */
+	public Integer recordTime(Supplier<Integer> code) {
+        Instant start = Instant.now();
+        // Supplier method .get() just invokes whatever it is passed
+        Integer result = code.get();
+        Instant end = Instant.now();
+
+        Duration elapsed = Duration.between(start,end);
+        logger.info("Computation took: " + elapsed.toMillis());
+
+        return result;
 	}
 	
 	/**
