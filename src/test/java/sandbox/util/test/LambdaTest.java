@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +16,7 @@ import sandbox.util.model.Funcionario;
 import sandbox.util.model.Gerente;
 
 public class LambdaTest {
-	
+	private static Logger logger = LogManager.getLogger(LambdaTest.class);
 	private Lambda lambda = new Lambda(funcionarios);
 	private static List<Funcionario> funcionarios = new ArrayList<>();
 	// private static Optional<Integer> idadeMaxima;
@@ -42,7 +44,7 @@ public class LambdaTest {
 	@Test
 	void testConsumer() {
 		List<Funcionario> list = lambda.functionalConsumer();
-		assertTrue(!list.stream().anyMatch(item -> item.getNome().charAt((item.getNome().length() - 1)) != 'X'));
+		assertTrue(!list.stream().anyMatch(item -> item.getNome().charAt((item.getNome().length() - 1)) != 'a'));
 	}
 	
 	@Test
@@ -59,7 +61,7 @@ public class LambdaTest {
 	void testRecordTime() {
 		// StringSuppliers supp = lambda::mockProcesso;
 		Integer result = lambda.recordTime(lambda::mockProcesso);
-		System.out.println(result);
+		logger.info(result);
 	}
 
 }

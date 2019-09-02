@@ -3,8 +3,10 @@ package sandbox.util;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -17,9 +19,9 @@ import org.apache.logging.log4j.Logger;
 import sandbox.util.model.Funcionario;
 
 public class Lambda {
-	
 	private static Logger logger = LogManager.getLogger(Lambda.class);
 	List<Funcionario> funcionarios;
+	List<String> sobreNomeFakes = Arrays.asList(" Oliveira", " Silva", " Pereira");
 	
 	public Lambda(List<Funcionario> funcs) {
 		funcionarios = funcs;
@@ -27,13 +29,13 @@ public class Lambda {
 	
 	
 	/**
-	 * Mapeia os nomes dos funcionários em uma lista de Strings.
+	 * Mapeia os nomes dos funcionários em uma lista de Strings com filtro para nulos.
 	 * @author felipe.goliveira
 	 * @return lista de Strings mapeadas.
 	 */
 	public List<String> mapToNomes(){
 		List<String> nomeFunc = funcionarios.stream()
-				.map(Funcionario::getNome)
+				.map(Funcionario::getNome).filter(Objects::nonNull)
 				.collect(Collectors.toList());
 		return nomeFunc;
 	}
@@ -48,6 +50,7 @@ public class Lambda {
 				.filter(funcionario -> funcionario.getIdade() > idade)
 				.sorted(Comparator.comparing(Funcionario::getNome))
 				.collect(Collectors.toList());
+		funcAlt.forEach(func -> logger.info(func));
 		return funcAlt;
 	}
 	
@@ -58,10 +61,10 @@ public class Lambda {
 	public List<Funcionario> functionalConsumer() {
 		List<Funcionario> copiaFuncionarios = new ArrayList<>();
 		copiaFuncionarios.addAll(funcionarios);
-		Consumer<List<Funcionario>> modify = list -> list.forEach(item -> item.setNome(item.getNome() + " X"));
+		Consumer<List<Funcionario>> modify = list -> list.forEach(item -> item.setNome(item.getNome() + sobreNomeFakes.get(getRandom(0, (sobreNomeFakes.size() - 1)))));
 		logger.info("Teste de accept and then com nomes de funcionários modificados ------------");
 		Consumer<List<Funcionario>> dispList = list -> list.stream()
-				.forEach(a -> System.out.print(a.getNome() + ", ")); 
+				.forEach(a -> logger.info(a.getNome() + ", ")); 
 		modify.andThen(dispList).accept(copiaFuncionarios);
 		// modify.accept(copiaFuncionarios);
 		return copiaFuncionarios;
