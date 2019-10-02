@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import sandbox.util.ClienteRel;
 import sandbox.util.Lambda;
 import sandbox.util.model.Analista;
 import sandbox.util.model.Funcionario;
@@ -62,6 +63,17 @@ public class LambdaTest {
 		// StringSuppliers supp = lambda::mockProcesso;
 		Integer result = lambda.recordTime(lambda::mockProcesso);
 		logger.info(result);
+	}
+	
+	@Test
+	void testReport() {
+		ClienteRel relatorio = new ClienteRel();
+		try {
+			relatorio.imprimir(funcionarios);
+			logger.info("Relatório criado com sucesso");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
